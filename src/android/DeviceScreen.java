@@ -17,6 +17,7 @@ public class DeviceScreen extends CordovaPlugin
 {
 	public static final String ACTION_GET_WIDTH = "getWidth";
 	public static final String ACTION_GET_HEIGHT = "getHeight";
+	public static final String ACTION_GET_SCALE = "getScale";
 	
 	private CallbackContext context;
 	private Activity activity;
@@ -85,6 +86,32 @@ public class DeviceScreen extends CordovaPlugin
 					decorView.getDisplay().getRealSize(outSize);
 					
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.y);
+			        context.sendPluginResult(res);
+				}
+				catch (Exception e)
+				{
+					context.error(e.getMessage());
+				}
+			}
+		});
+        
+		return true;
+	}
+	
+	/**
+	 * The scale of the screen
+	 */	
+	protected boolean getScale()
+	{
+		activity.runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				try
+				{
+					float density = context.getResources().getDisplayMetrics().density;
+			        PluginResult res = new PluginResult(PluginResult.Status.OK, density);
 			        context.sendPluginResult(res);
 				}
 				catch (Exception e)

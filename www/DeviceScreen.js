@@ -12,6 +12,11 @@
 		getHeight: function(successFunction, errorFunction)
 		{
 			cordova.exec(successFunction, errorFunction, 'DeviceScreen', 'getHeight', []);
+		},
+		
+		getScale: function(successFunction, errorFunction)
+		{
+			cordova.exec(successFunction, errorFunction, 'DeviceScreen', 'getScale', []);
 		}
 	};
 	
