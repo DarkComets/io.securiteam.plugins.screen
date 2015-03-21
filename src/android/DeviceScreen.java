@@ -110,7 +110,7 @@ public class DeviceScreen extends CordovaPlugin
 			{
 				try
 				{
-					float density = context.getResources().getDisplayMetrics().density;
+					float density = getResources().getDisplayMetrics().density;
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, density);
 			        context.sendPluginResult(res);
 				}
