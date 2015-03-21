@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+  xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  id="io.securiteam.plugins.screen"
+  version="0.1.0"
+  >
+
+  <name>DeviceScreen</name>
+
+  <description>
+    Plugin to retrieve information about the device screen.
+  </description>
+
+  <license>MIT</license>
+
+  <engines>
+    <engine name="cordova" version=">=3.0.0" />
+  </engines>
+
+  <js-module 
+    src="www/DeviceScreen.js" 
+    name="DeviceScreen"
+    >
+      <clobbers target="DeviceScreen" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="DeviceScreen">
+          <param 
+            name="android-package" 
+            value="io.securiteam.plugins.DeviceScreen" 
+            />
+      </feature>
+    </config-file>
+    <source-file
+      src="src/android/io/securiteam/plugins/DeviceScreen.java" 
+      target-dir="src/io/securiteam/plugins" 
+      />
+   </platform>
+   
+</plugin>
