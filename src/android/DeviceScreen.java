@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
@@ -25,6 +27,37 @@ public class DeviceScreen extends CordovaPlugin
 	private Activity activity;
 	private Window window;
 	private View decorView;
+	
+	//https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/dimens.xml
+	private int getNavigationBarHeight() {
+		Resources resources = activity.getApplicationContext().getResources();
+
+		int id = resources.getIdentifier(
+				resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape",
+				"dimen", "android");
+		if (id > 0) {
+			return resources.getDimensionPixelSize(id);
+		}
+		return 0;
+	}
+	private int getStatusBarHeight() {
+		Resources resources = activity.getApplicationContext().getResources();
+		
+		int id = resources.getIdentifier("status_bar_height", "dimen", "android");
+		if (id > 0) {
+			return resources.getDimensionPixelSize(id);
+		}
+		return 0;
+	}
+	private int getActionBarHeight() {
+		Resources resources = activity.getApplicationContext().getResources();
+		
+		int id = resources.getIdentifier("action_bar_default_height", "dimen", "android");
+		if (id > 0) {
+			return resources.getDimensionPixelSize(id);
+		}
+		return 0;
+	}
 	
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException
@@ -99,6 +132,7 @@ public class DeviceScreen extends CordovaPlugin
 						height = outSize.y;
 					} else {
 						height = activity.getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+						height += getNavigationBarHeight() + getStatusBarHeight() + getActionBarHeight();
 					}
 					
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, height);
