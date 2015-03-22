@@ -45,7 +45,7 @@ public class DeviceScreen extends CordovaPlugin
 	}
 	
 	/**
-	 * The width of the screen in immersive mode
+	 * The width of the screen
 	 */
 	protected boolean getWidth()
 	{
@@ -56,11 +56,17 @@ public class DeviceScreen extends CordovaPlugin
 			{
 				try
 				{
-					Point outSize = new Point();
+					int width;
 					
-					decorView.getDisplay().getRealSize(outSize);
+					if (Build.VERSION.SDK_INT >= 17) {
+						Point outSize = new Point();
+						decorView.getDisplay().getRealSize(outSize);
+						width = outSize.x;
+					} else {
+						width = activity.getApplicationContext().getResources().getDisplayMetrics().widthPixels;
+					}
 					
-			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.x);
+			        PluginResult res = new PluginResult(PluginResult.Status.OK, width);
 			        context.sendPluginResult(res);
 				}
 				catch (Exception e)
@@ -74,7 +80,7 @@ public class DeviceScreen extends CordovaPlugin
 	}
 	
 	/**
-	 * The height of the screen in immersive mode
+	 * The height of the screen
 	 */	
 	protected boolean getHeight()
 	{
@@ -85,11 +91,17 @@ public class DeviceScreen extends CordovaPlugin
 			{
 				try
 				{
-					Point outSize = new Point();
+					int height;
 					
-					decorView.getDisplay().getRealSize(outSize);
+					if (Build.VERSION.SDK_INT >= 17) {
+						Point outSize = new Point();
+						decorView.getDisplay().getRealSize(outSize);
+						height = outSize.y;
+					} else {
+						height = activity.getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+					}
 					
-			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.y);
+			        PluginResult res = new PluginResult(PluginResult.Status.OK, height);
 			        context.sendPluginResult(res);
 				}
 				catch (Exception e)
