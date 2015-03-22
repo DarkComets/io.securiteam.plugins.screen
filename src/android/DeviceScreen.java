@@ -21,8 +21,7 @@ public class DeviceScreen extends CordovaPlugin
 	public static final String ACTION_GET_HEIGHT = "getHeight";
 	public static final String ACTION_GET_SCALE = "getScale";
 	
-	private CallbackContext cbContext;
-	private Context context;
+	private CallbackContext context;
 	private Activity activity;
 	private Window window;
 	private View decorView;
@@ -30,9 +29,8 @@ public class DeviceScreen extends CordovaPlugin
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException
 	{
-		cbContext = callbackContext;
+		context = callbackContext;
 		activity = cordova.getActivity();
-		context = activity.getApplicationContext(); 
 		window = activity.getWindow();
 		decorView = window.getDecorView();
 		
@@ -63,11 +61,11 @@ public class DeviceScreen extends CordovaPlugin
 					decorView.getDisplay().getRealSize(outSize);
 					
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.x);
-			        cbContext.sendPluginResult(res);
+			        context.sendPluginResult(res);
 				}
 				catch (Exception e)
 				{
-					cbContext.error(e.getMessage());
+					context.error(e.getMessage());
 				}
 			}
 		});
@@ -92,11 +90,11 @@ public class DeviceScreen extends CordovaPlugin
 					decorView.getDisplay().getRealSize(outSize);
 					
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.y);
-			        cbContext.sendPluginResult(res);
+			        context.sendPluginResult(res);
 				}
 				catch (Exception e)
 				{
-					cbContext.error(e.getMessage());
+					context.error(e.getMessage());
 				}
 			}
 		});
@@ -116,13 +114,13 @@ public class DeviceScreen extends CordovaPlugin
 			{
 				try
 				{
-					final float density = context.getResources().getDisplayMetrics().density;
+					float density = activity.getApplicationContext().getResources().getDisplayMetrics().density;
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, density);
-			        cbContext.sendPluginResult(res);
+			        context.sendPluginResult(res);
 				}
 				catch (Exception e)
 				{
-					cbContext.error(e.getMessage());
+					context.error(e.getMessage());
 				}
 			}
 		});
