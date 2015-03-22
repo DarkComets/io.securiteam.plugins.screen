@@ -6,12 +6,14 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.util.DisplayMetrics;
 
 public class DeviceScreen extends CordovaPlugin
 {
@@ -19,7 +21,8 @@ public class DeviceScreen extends CordovaPlugin
 	public static final String ACTION_GET_HEIGHT = "getHeight";
 	public static final String ACTION_GET_SCALE = "getScale";
 	
-	private CallbackContext context;
+	private CallbackContext cbContext;
+	private Context context;
 	private Activity activity;
 	private Window window;
 	private View decorView;
@@ -27,8 +30,9 @@ public class DeviceScreen extends CordovaPlugin
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException
 	{
-		context = callbackContext;
+		cbContext = callbackContext;
 		activity = cordova.getActivity();
+		context = activity.getApplicationContext(); 
 		window = activity.getWindow();
 		decorView = window.getDecorView();
 		
@@ -36,6 +40,8 @@ public class DeviceScreen extends CordovaPlugin
 			return getWidth();
 		else if (ACTION_GET_HEIGHT.equals(action))
 			return getHeight();
+		else if (ACTION_GET_SCALE.equals(action))
+			return getScale();
 		
 		return false;
 	}
@@ -57,11 +63,11 @@ public class DeviceScreen extends CordovaPlugin
 					decorView.getDisplay().getRealSize(outSize);
 					
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.x);
-			        context.sendPluginResult(res);
+			        cbContext.sendPluginResult(res);
 				}
 				catch (Exception e)
 				{
-					context.error(e.getMessage());
+					cbContext.error(e.getMessage());
 				}
 			}
 		});
@@ -86,11 +92,11 @@ public class DeviceScreen extends CordovaPlugin
 					decorView.getDisplay().getRealSize(outSize);
 					
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, outSize.y);
-			        context.sendPluginResult(res);
+			        cbContext.sendPluginResult(res);
 				}
 				catch (Exception e)
 				{
-					context.error(e.getMessage());
+					cbContext.error(e.getMessage());
 				}
 			}
 		});
@@ -110,13 +116,13 @@ public class DeviceScreen extends CordovaPlugin
 			{
 				try
 				{
-					float density = getResources().getDisplayMetrics().density;
+					final float density = context.getResources().getDisplayMetrics().density;
 			        PluginResult res = new PluginResult(PluginResult.Status.OK, density);
-			        context.sendPluginResult(res);
+			        cbContext.sendPluginResult(res);
 				}
 				catch (Exception e)
 				{
-					context.error(e.getMessage());
+					cbContext.error(e.getMessage());
 				}
 			}
 		});
